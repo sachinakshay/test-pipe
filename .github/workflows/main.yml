@@ -1,17 +1,26 @@
-name: Multi-Stage Pipeline
+name: Multi-Stage CI/CD Pipeline
 
-on: push
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
+    name: Build Stage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Build Step
+
+      - name: Build Application
         run: echo "Building the project..."
 
   test:
+    name: Test Stage
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -19,6 +28,7 @@ jobs:
         run: echo "Running tests..."
 
   deploy:
+    name: Deploy Stage
     runs-on: ubuntu-latest
     needs: test
     steps:
